@@ -40,7 +40,6 @@ export const SignupComponent = () => {
               validationSchema={validationSchema}
               onSubmit={onSubmit}
             >
-              {({ setFieldValue }) => (
                 <Form>
                   <h2 className="text-center mb-4">Signup</h2>
 
@@ -128,7 +127,6 @@ export const SignupComponent = () => {
                     </Button>
                   </div>
                 </Form>
-              )}
             </Formik>
           </Col>
         </Row>

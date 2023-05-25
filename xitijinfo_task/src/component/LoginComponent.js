@@ -4,6 +4,7 @@ import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
 import { Container, Row, Col, Form as BootstrapForm, Button } from 'react-bootstrap';
 import { loginMiddleware } from '../redux/user/userAction';
+import { useNavigate } from 'react-router-dom';
 
 const initialValues = {
   email: '',
@@ -16,15 +17,16 @@ const validationSchema = yup.object({
 });
 
 export const LoginComponent = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const clearLocalStorage = () => {
     localStorage.clear();
   };
 
-  const onSubmit = (values) => {
-    console.log('values', values);
+  const onSubmit = () => {
     dispatch(loginMiddleware());
+    navigate('/');
   };
 
   return (
