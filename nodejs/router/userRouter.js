@@ -1,6 +1,18 @@
-const { signup, login, getUser, deleteUser, updateUser, getAllUser, getTodayUser, getLastLoginUser } = require('../controller/userController');
+const { 
+    signup, 
+    login, 
+    getUser, 
+    deleteUser, 
+    updateUser, 
+    getAllUser, 
+    getTodayUser, 
+    getLastLoginUser, 
+    createPost,
+    deletePost,
+    updatePost,
+    getAllPost
+} = require('../controller/userController');
 const { userVarification } = require('../middleware/middleware');
-const {getTodayUserService} = require('../service/userService')
 
 const userRouter = require('express').Router();
 
@@ -11,5 +23,9 @@ userRouter.delete('/deleteuser', userVarification, deleteUser);
 userRouter.put('/updateUser', userVarification, updateUser);
 userRouter.get('/getAllUser', userVarification, getAllUser);
 userRouter.get('/getTodayDate', userVarification, getTodayUser);
-userRouter.get('/lastloginuser', userVarification, getLastLoginUser)
+userRouter.get('/lastloginuser', userVarification, getLastLoginUser);
+userRouter.put('/createPost', userVarification, createPost);
+userRouter.put('/deletepost', userVarification, deletePost);
+userRouter.put('/updatepost', userVarification, updatePost);
+userRouter.get('/getallpost', userVarification, getAllPost);
 module.exports = { userRouter };

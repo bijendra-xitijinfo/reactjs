@@ -24,6 +24,14 @@ const userSchema = new Schema(
             type: String,
             required: true,
         },
+        post: [
+            {
+                postName: String,
+                postDescription: String,
+                like: Number,
+                dislike: Number,
+            }
+        ]
     },
     { timestamps: true }
 );

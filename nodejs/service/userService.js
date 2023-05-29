@@ -2,6 +2,7 @@ const { userModel } = require("../schema/userSchema");
 const { getOneData, create, deleteData, updateData } = require('../dao/dao');
 const {bcryptPassword, comparePassword, generateToken} = require('../utils/utils');
 const { tokenModel } = require("../schema/tokenSchema");
+const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 
 const signupService = async (data) => {
@@ -155,6 +156,50 @@ const getLastLoginService = async () => {
         message: jwt.verify(token, "user")
     }
 }
+
+const createPostService = async (req) => {
+  const {email} = req.user;
+  const message =  await userModel.findOneAndUpdate({email}, { $push: {post: req.body}}, {new: true});
+  return {
+    status: 200,
+    message,
+  }
+}
+
+const deletePostService = async (req) => {
+  const {_id} = req.user;
+  const {postName} = req.body;
+  const message = await userModel.updateOne({_id}, { $pull: {post: {postName: postName}}}, {new: true});
+  return {
+    status: 200,
+    message,
+  }
+}
+
+const updatePostService = async (req) => {
+  const {_id} = req.user;
+
+  const message = await userModel.updateOne(
+    { _id, 'post.postName': req.body.postName },
+    { $set: { 'post.$': req.body } }
+  );
+  return {
+    status: 200,
+    message,
+  } 
+}
+
+const getAllPostService = async (req) => {
+  const message = await userModel.aggregate([
+    { $match: { email: req.user.email } },
+    { $unwind: "$post" },
+    { $project: { _id: 0, post: 1 , } },
+  ]);
+  return {
+    status: 200,
+    message,
+  }
+} 
 module.exports = { 
     signupService, 
     loginService, 
@@ -163,5 +208,9 @@ module.exports = {
     updateUserService,
      getAllUserService, 
      getTodayUserService, 
-     getLastLoginService 
+     getLastLoginService,
+     createPostService, 
+     deletePostService,
+     updatePostService,
+     getAllPostService,
     };
